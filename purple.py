@@ -86,6 +86,7 @@ def create():
 			break
 		else:
 			time.sleep(1)
+	driver.close()
 
 
 
