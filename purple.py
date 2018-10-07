@@ -79,7 +79,13 @@ def create():
 	EC.element_to_be_clickable((By.XPATH, """/html/body/div/div/div[1]/div[2]/div/div/form/div[3]/div[1]/button""")))
 	element.send_keys(Keys.ENTER)
 
-	raw_input('press enter when confirmed: ')
+
+	for i in range(0, 15):
+		if 'thank' in str(driver.current_url):
+			print('Order confirmed')
+			break
+		else:
+			time.sleep(1)
 
 
 
