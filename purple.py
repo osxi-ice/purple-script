@@ -1,13 +1,18 @@
 import json
 import time
 import random
+import threading
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+task_numbers = {'task_number_final' : 0}
+
+
 def start():
+	global tasks
 	global json_data
 	print('loading json file')
 	try:
@@ -17,13 +22,18 @@ def start():
 		print('unable to open json file')
 		time.sleep(2)
 		quit()
-	task = raw_input('Tasks: ')
-	for i in range(0, int(task)):
-		create()
+	tasks = raw_input('Tasks: ')
+	threads = raw_input('Threads: ')
+	for i in range(0, int(threads)):
+		t = threading.Thread(target=create)
+		t.start()
 		time.sleep(1)
 
 
 def create():
+
+	task_numbers['task_number_final'] = task_numbers['task_number_final'] + 1
+
 	#load chrome window
 	driver = webdriver.Chrome()
 	driver.get('https://purple.com/purple-boys#get-squishy')
@@ -80,13 +90,21 @@ def create():
 	element.send_keys(Keys.ENTER)
 
 
-	for i in range(0, 15):
+	for i in range(0, 1500):
 		if 'thank' in str(driver.current_url):
 			print('Order confirmed')
 			break
 		else:
-			time.sleep(1)
+			time.sleep(0.1)
 	driver.close()
+
+
+	if int(task_numbers['task_number_final']) != int(tasks):
+		t = threading.Thread(target=create)
+		t.start()
+	elif int(task_numbers['task_number_final']) == int(tasks):
+		quit()
+
 
 
 
